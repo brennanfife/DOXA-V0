@@ -1,4 +1,4 @@
 # ETHDenver-Repo
-Decentralized Oracles
+Lottery
 
 
