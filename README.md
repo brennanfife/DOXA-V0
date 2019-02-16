@@ -1,4 +1,1 @@
-# ETHDenver-Repo
-Lottery
-
-
+# ETHDenver
