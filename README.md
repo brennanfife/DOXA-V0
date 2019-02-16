@@ -1,2 +1,4 @@
 # ETHDenver-Repo
-Repo for ETHDenver Project
+Decentralized Oracles
+
+
