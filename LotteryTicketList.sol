@@ -128,7 +128,7 @@ contract LotteryTicketList {
         }
         // Otherwise don't do anything
     }
-
+        
     function () payable {
         potAmount += msg.Value;
     }
