@@ -2,18 +2,31 @@ pragma solidity ^0.4.0;
 
 contract LotteryTicketList {
     // Type and global var definitions
-    uint ticketPrice;
-    address owner;
-    bytes32 currentWinningHash;
-    mapping[address]uint Winners;
-    mapping[address]Settings UserSettings;
-    struct Settings {
-        uint PayoutType;
-        // Will probably want other fields
+    uint constant annuityPayoutPercentage = 4; // ppt (parts per thousands)
+    string constant lotteryPeriod = "month";
+    string constant annuityAndProfitPayoutPeriod = "quarterly";
+    address public potAddress;
+    uint public potAmount;
+    uint public ticketPrice;
+    address public owner;
+    bytes32 public currentWinningHash;
+
+    constructor() public {
+        owner = msg.sender;
     }
 
+    struct Ticket {
+        uint Price;
+        uint PayoutType;
+        address Owner;
+    }
+
+    Ticket[] public winningTickets;
+    mapping(address => uint256) public Annuities;
+
+
     // Owner functions
-    function SetTicketPrice(price uint) public onlyOwner {
+    function SetTicketPrice(uint price) public onlyOwner {
         ticketPrice = price;
     }
 
@@ -28,16 +41,32 @@ contract LotteryTicketList {
     }
 
     // Private, internally called functions
+    function transfer(address to, uint256 amount) private {
+        require(msg.sender==owner);
+        to.transfer(amount);
+    }
+
     function getRandomNumber() private {
         // Make call to Rhombus to get random number
         // Immediately hash it and store
-        currentWinningHash = keccak256(randNumber)
+        uint rand;
+        rand = 2342308;
+        currentWinningHash = keccak256(rand);
+    }
+
+    function beginCycle() private {
+        // Wait x amount of time and then trigger endCycle
     }
 
     function endCycle() private {
-        // Iterate through list of winners, if any
-        // if there are no winners, begin a new cycle
-        // if there winners, initiate payout process for those addresses
+        // If we don't have any winners yet, begin a new cycle without flushing
+        if (winningTickets.length == 0) {
+            beginCycle();
+        }
+        // If we have winners, iterate through them and process their payouts
+        for (i=0;i<winningTickets.length;i++) {
+            emit winnerFound(winningTickets[i].Owner);
+        }
         // emit winnerFound(winner)
     }
 	
@@ -45,25 +74,40 @@ contract LotteryTicketList {
         // Process the payout for each address depending on their PayOutSetting
     }
 
-    function profitSharePayout() private {
-        // Handle payouts for profit shares
+    function directPayout(Ticket ticket) private {
+        // Handle direct payouts
+        transfer(ticket.Owner, //somehow know the amount they owe and put it here)
     }
 
     function annuityPayout() private {
         // Handle payouts for annuity accounts
+        // 10% of total stake profit is distributed proportionally amongst annuity owners
     }
 
-    event winnerFound(winner address);
+    function profitSharePayout() private {
+        // Handle payouts for profit shares
+        // Some percentage of the remaining 60% of total stake profit is distributed amongst profit share owners
+        // Last 30% is fed back into pot or developer fund/slush fund
+    }
+
+    event winnerFound(address winner);
 
     // External functions for participants to buy tickets and choose their payout method
-    function BuyTicket(guess uint) external {
-    // Check if the hash of the guess for this msg.sender
-    // Is the same as the hash of the random number solution for this round
-    // If user guessed right, add their address to the Winners mapping and increment the associated uint
-    // If user guessed wrong, discard their address (don't do anything with it)
+    function BuyTicket(uint guess, uint payoutType) external payable costs(ticketPrice) {
+        potAmount += msg.Value;
+        // Check if the hash of the guess for this msg.sender is the same as the hash of the random number solution for this round
+        // If user guessed right, create a winning ticket for them
+        if (keccak256(guess) == currentWinningHash) {
+            Ticket ticket;
+            ticket.Price = ticketPrice;
+            ticket.Owner = msg.sender;
+            ticket.PayoutType = payoutType;
+            winningTickets.push(ticket);
+        }
+        // Otherwise don't do anything
     }
 
-    function ChoosePayout(payoutType uint) external {
-      UserSettings[msg.sender] = Settings(payoutType)
+    function () payable {
+        potAmount += msg.Value;
     }
 }
