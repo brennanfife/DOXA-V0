@@ -64,6 +64,7 @@ contract LotteryTicketList {
 
     function beginCycle() private {
         // Wait x amount of time and then trigger endCycle
+        currentWinningHash = keccak256(randNumber);
     }
 
     function restartCycle() private {
