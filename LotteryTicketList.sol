@@ -1,18 +1,22 @@
 pragma solidity ^0.4.0;
 
 import  "../contracts/Ilighthouse.sol";
+import  "../contracts/SafeMath.sol";
+
 contract LotteryTicketList {
     // Type and global var definitions
     uint constant annuityPayoutPercentage = 4; // ppt (parts per thousands)
     string constant lotteryPeriod = "month";
     string constant annuityAndProfitPayoutPeriod = "quarterly";
     address public potAddress;
-    uint public potAmount;
-    uint public ticketPrice;
+    uint256 public potAmount;
+    uint256 public ticketPrice;
     address public owner;
     bytes32 public currentWinningHash;
 
     ILighthouse  public myLighthouse;
+    SafeMath public mySafeMath;
+
     constructor() public {
         owner = msg.sender;
         myLighthouse = _myLighthouse;
@@ -62,33 +66,47 @@ contract LotteryTicketList {
         // Wait x amount of time and then trigger endCycle
     }
 
+    function restartCycle() private {
+
+    }
+
     function endCycle() private {
         // If we don't have any winners yet, begin a new cycle without flushing
-        if (winningTickets.length == 0) {
-            beginCycle();
+        uint256 len = winningTickets.length;
+        if (len == 0) {
+            restartCycle();
         }
         // If we have winners, iterate through them and process their payouts
-        for (i=0;i<winningTickets.length;i++) {
+        for (i=0;i<len;i++) {
+            processPayout(winningTickets[i]);
             emit winnerFound(winningTickets[i].Owner);
         }
         // emit winnerFound(winner)
     }
 	
-    function processPayout() private {
+    function processPayout(Ticket ticket) private {
         // Process the payout for each address depending on their PayOutSetting
+        if (ticket.PayoutType == 0) {
+            directPayout(ticket);
+        } else if (ticket.PayoutType == 1) {
+            annuityPayout(ticket);
+        } else if (ticket.PayoutType == 2) {
+            profitSharePayout(ticket);
+        }
     }
 
     function directPayout(Ticket ticket) private {
         // Handle direct payouts
-        transfer(ticket.Owner, //somehow know the amount they owe and put it here)
+        uint256 amount = mySafeMath.div(potAmount, winningTickets.length);
+        transfer(ticket.Owner, amount);
     }
 
-    function annuityPayout() private {
+    function annuityPayout(Ticket ticket) private {
         // Handle payouts for annuity accounts
         // 10% of total stake profit is distributed proportionally amongst annuity owners
     }
 
-    function profitSharePayout() private {
+    function profitSharePayout(Ticket ticket) private {
         // Handle payouts for profit shares
         // Some percentage of the remaining 60% of total stake profit is distributed amongst profit share owners
         // Last 30% is fed back into pot or developer fund/slush fund
