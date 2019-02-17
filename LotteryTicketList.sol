@@ -1,5 +1,6 @@
 pragma solidity ^0.4.0;
 
+import  "../contracts/Ilighthouse.sol";
 contract LotteryTicketList {
     // Type and global var definitions
     uint constant annuityPayoutPercentage = 4; // ppt (parts per thousands)
@@ -11,8 +12,10 @@ contract LotteryTicketList {
     address public owner;
     bytes32 public currentWinningHash;
 
+    ILighthouse  public myLighthouse;
     constructor() public {
         owner = msg.sender;
+        myLighthouse = _myLighthouse;
     }
 
     struct Ticket {
@@ -48,10 +51,11 @@ contract LotteryTicketList {
 
     function getRandomNumber() private {
         // Make call to Rhombus to get random number
+        uint winningNumber;
+        bool ok;
+        (winningNumber,ok) = myLighthouse.peekData(); // obtain random number from Rhombus Lighthouse
         // Immediately hash it and store
-        uint rand;
-        rand = 2342308;
-        currentWinningHash = keccak256(rand);
+        currentWinningHash = keccak256(winningNumber);
     }
 
     function beginCycle() private {
