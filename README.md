@@ -1,3 +1,5 @@
+# DOXA
+
 It's a widely known fact that Americans love to play the lottery. In 2017, the country spent roughly $75 billion dollars on lottery tickets, yet you are more likely to be struck by lightning and eaten by a shark ON THE SAME DAY, then win a MegaMillion jackpot. 
 
 According to data drawn by [Vox](https://www.vox.com/identities/2016/1/13/10763268/lottery-poor-prey), the people who are holding up this industry are those who are lower class, minorities, and often addicts of the game. Stated in the article, "the poorest third of households buy half of all lotto tickets, according to a Duke University study in the 1980s, in part because lotteries are advertised most aggressively in poorer neighborhoods. A North Carolina report from NC Policy Watch found that the people living in the poorest counties buy the most tickets. 'Out of the 20 counties with poverty rates higher than 20 percent, 18 had lottery sales topping the statewide average of $200 per adult,' the North Carolina Justice Center reported."
