@@ -1,4 +1,3 @@
-![DOXA](https://imgur.com/a/TmRlD92)
 ![Imgur](https://i.imgur.com/RTrKyRe.png)
 
 It's a widely known fact that Americans love to play the lottery. In 2017, the country spent roughly $75 billion dollars on lottery tickets, yet you are more likely to be struck by lightning and eaten by a shark ON THE SAME DAY, then win a MegaMillion jackpot. 
