@@ -1,6 +1,6 @@
 ![Imgur](https://i.imgur.com/OBwX1EY.png)
 
-(CHECK OUT THE LATEST VERSION OF DOXA HERE)[https://github.com/brennanfife/doxa]
+[CHECK OUT THE LATEST VERSION OF DOXA HERE](https://github.com/brennanfife/doxa)
 
 Americans love to play the lottery... In 2017, it was estimated the US spent roughly $75 billion dollars on them alone. Yet, most of us who do not play realize a ticket holder is more likely to be struck by lightning and attacked by a shark (ON THE SAME DAY) then win a MegaMillion jackpot. 
 
